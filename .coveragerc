@@ -1,0 +1,6 @@
+[run]
+omit = 
+    */dist-packages/*
+    */Persistencia_factory.py
+    */Persistencia_usuari.py
+    */test_*
