@@ -4,6 +4,7 @@
 """
     Test de la Classe Persistencia_factory_mySql de la llista de la compra
 """
+import uuid
 import unittest
 import bcrypt
 import sys, os, shutil
@@ -49,6 +50,8 @@ class SimpleTestCase(unittest.TestCase):
         assert usuari.get_nom() == self.USUARI_TEST
         assert type(usuari.get_id()) is int
         assert usuari.get_password_hash() is not None
+        # x_api_key = usuari.set_sessio(str(uuid.uuid4()))
+        # assert type(x_api_key) is str
         assert usuari.delete()
         return
     
