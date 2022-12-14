@@ -54,7 +54,13 @@ class SimpleTestCase(unittest.TestCase):
         assert deleted
         usuari = self.crea_usuari()
         nova_id = self.pu.desa(usuari)
+        usuari.set_id(nova_id)
         assert type(nova_id) is int
+        api_key = "no_existeix"
+        assert self.pu.get_from_apikey(api_key) is None
+        api_key = "si_existeix"
+        self.pu.set_sessio(api_key, usuari)
+        assert self.pu.get_from_apikey(api_key).get_nom() == usuari.get_nom()
         deleted = self.pu.delete(nova_id)
         assert deleted
         return
