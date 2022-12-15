@@ -11,7 +11,7 @@ sys.path.append("../Public_llista_compra_m06/")
 from Configurador import Configurador
 from Usuari import Usuari
 
-class test_Persistencia_factory_mySql(unittest.TestCase):
+class test_Persistencia_factory_redis(unittest.TestCase):
     USUARI_TEST = "usuari de test"
     def setUp(self):
         """ Es crida abans de cada test """
@@ -19,7 +19,7 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
         shutil.copyfile(
             os.path.join(
                 os.path.dirname(__file__), 
-                "configuracio_mysql.yml"
+                "configuracio_redis.yml"
                 ),
             os.path.join(
                 os.path.dirname(__file__), 
@@ -46,7 +46,7 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
     def test_desa_get_delete(self):
         usuari = self.crea_usuari()
         nova_id = self.pu.desa(usuari)
-        assert type(nova_id) is int
+        assert type(nova_id) is str
         assert type(self.pu.get(nova_id)) is Usuari
         rewrite_id = self.pu.desa(usuari)
         assert rewrite_id == nova_id # Only 1 user should be created
@@ -55,7 +55,7 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
         usuari = self.crea_usuari()
         nova_id = self.pu.desa(usuari)
         usuari.set_id(nova_id)
-        assert type(nova_id) is int
+        assert type(nova_id) is str
         api_key = "no_existeix"
         assert self.pu.get_from_apikey(api_key) is None
         api_key = "si_existeix"
@@ -68,9 +68,12 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
     def test_llista(self):
         llista = self.pu.get_llista()
         assert llista is not None
+        id_a_esborrar = False
         for usuari in llista:
             if usuari.get_nom() == self.USUARI_TEST:
-                self.pu.delete(usuari.get_id())
+                id_a_esborrar = usuari.get_id()
+        if id_a_esborrar:
+            self.pu.delete(id_a_esborrar)
 
     def crea_usuari(self):
         return Usuari(

@@ -2,7 +2,7 @@
 
 
 """
-    Test de la Classe Persistencia_factory_mySql de la llista de la compra
+    Test de la Classe Persistencia_factory_redis de la llista de la compra
 """
 import unittest
 import sys, os, shutil
@@ -10,10 +10,10 @@ sys.path.append("../Public_llista_compra_m06/")
 from Configurador import Configurador
 from Persistencia_factory import Persistencia_factory
 from Persistencia_usuari import Persistencia_usuari
-from Persistencia_usuari_mySql import Persistencia_usuari_mySql
+from Persistencia_usuari_redis import Persistencia_usuari_redis
 
 
-class test_Persistencia_factory_mySql(unittest.TestCase):
+class test_Persistencia_factory_redis(unittest.TestCase):
 
     def setUp(self):
         """ Es crida abans de cada test """
@@ -21,7 +21,7 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
         shutil.copyfile(
             os.path.join(
                 os.path.dirname(__file__), 
-                "configuracio_mysql.yml"
+                "configuracio_redis.yml"
                 ),
             os.path.join(
                 os.path.dirname(__file__), 
@@ -46,7 +46,7 @@ class test_Persistencia_factory_mySql(unittest.TestCase):
     def test_get_Persistencia_usuari_factory(self):
         p_usuari = self.pf.get_Persistencia_usuari_factory()
         assert issubclass(type(p_usuari), Persistencia_usuari)
-        assert type(p_usuari) is Persistencia_usuari_mySql
+        assert type(p_usuari) is Persistencia_usuari_redis
         return
 
         
